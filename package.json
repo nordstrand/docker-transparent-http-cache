@@ -1,0 +1,46 @@
+{
+  "name": "docker-transparent-http-cache",
+  "version": "0.0.2",
+  "dependencies": {
+    "commander": "2.0.0",
+    "dot": "^1.0.3",
+    "log4js": "0.6.8",
+    "mkdirp": "0.3.5",
+    "pem": "^1.7.2",
+    "request": "2.27.0"
+  },
+  "description": "HTTP/HTTPS caching proxy for Docker build containers",
+  "main": "index.js",
+  "devDependencies": {
+    "mocha": "*",
+    "rimraf": "*"
+  },
+  "scripts": {
+    "start": "node bin/docker-transparent-http-cache",
+    "test": "mocha -R spec --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:runk/npm-proxy-cache.git"
+  },
+  "bin": {
+    "docker-transparent-http-cache": "./bin/docker-transparent-http-cache"
+  },
+  "keywords": [
+    "npm",
+    "proxy",
+    "registry",
+    "cache",
+    "proxy server",
+    "forward proxy",
+    "docker"
+  ],
+  "author": "Dmitry Shirokov <deadrunk@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/runk/npm-proxy-cache/issues"
+  },
+  "engines": {
+    "node": ">=0.12"
+  }
+}
