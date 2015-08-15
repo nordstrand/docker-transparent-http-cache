@@ -28,7 +28,7 @@ docker-transparent-http-cache serves is signed by a self signed CA certificate t
 
 A nicer solution than `strict-ssl false` is to install the CA certificate intself as a trusted ca bundle:
 
-    $ npm config cafile rootCA.epm
+    $ npm config cafile rootCA.pem
 
 Above command of course goes into the provisioning/Dockerfile of your private build image!
 
@@ -36,7 +36,7 @@ Above command of course goes into the provisioning/Dockerfile of your private bu
 
 Will only cache GET requests, other verbs are passed straight through. Deploying/pushing artifacts will thus be unaffected.
 
-Caches HTTP on port 80 and HTTPS on port 443 on `TARGET_HOSTNAME`.
+Caches by default HTTP on port 80 and HTTPS on port 443 on `TARGET_HOSTNAME`.
 
 ## Credits
 
