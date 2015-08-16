@@ -5,7 +5,6 @@
     "commander": "2.0.0",
     "dot": "^1.0.3",
     "log4js": "0.6.8",
-    "mkdirp": "0.3.5",
     "pem": "^1.7.2",
     "request": "2.27.0"
   },
@@ -21,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:runk/npm-proxy-cache.git"
+    "url": "git@github.com:nordstrand/docker-transparent-http-cache.git"
   },
   "bin": {
     "docker-transparent-http-cache": "./bin/docker-transparent-http-cache"
@@ -35,10 +34,10 @@
     "forward proxy",
     "docker"
   ],
-  "author": "Dmitry Shirokov <deadrunk@gmail.com>",
+  "author": "Jonas Nordstrand",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/runk/npm-proxy-cache/issues"
+    "url": "https://github.com/nordstrand/docker-transparent-http-cache"
   },
   "engines": {
     "node": ">=0.12"
