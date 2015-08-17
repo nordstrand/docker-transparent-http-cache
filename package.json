@@ -3,10 +3,10 @@
   "version": "0.0.2",
   "dependencies": {
     "commander": "2.0.0",
-    "dot": "^1.0.3",
     "log4js": "0.6.8",
     "pem": "^1.7.2",
-    "request": "2.27.0"
+    "request": "2.27.0",
+    "restify": "^4.0.0"
   },
   "description": "HTTP/HTTPS caching proxy for Docker build containers",
   "main": "index.js",
