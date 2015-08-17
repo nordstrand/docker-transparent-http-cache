@@ -102,6 +102,7 @@ var Main = React.createClass({
                 </label>
                 <CacheEntries data={this.state.cache.contents} />
                 <hr/>
+                <span style={{float: 'right'}}>Time-to-live: {this.state.meta.ttl} s</span>
                 <span>{this.state.meta.applicationName}, version {this.state.meta.applicationVersion}</span>
 
             </div>

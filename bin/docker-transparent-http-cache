@@ -5,6 +5,8 @@ var fs = require('fs'),
 
 var defaultHttpPort=process.env.PROXY_HTTP_PORT ? process.env.PROXY_HTTP_PORT : 8080;
 var defaultHttpsPort=process.env.PROXY_HTTPS_PORT ? process.env.PROXY_HTTPS_PORT : 8443;
+var defaultAdminPort=process.env.PROXY_ADMIN_PORT ? process.env.PROXY_ADMIN_PORT : 8888;
+var defaultTtl=process.env.TTL ? process.env.TTL : 60;
 
 program
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
@@ -12,10 +14,8 @@ program
   .option('-h, --host [name]', 'Hostname [0.0.0.0]', '0.0.0.0')
   .option('-p, --httpport [number]', 'An integer argument [' + defaultHttpPort + ']', parseInt, defaultHttpPort)
   .option('-s, --httpsport [number]', 'An integer argument [' + defaultHttpsPort + ']', parseInt, defaultHttpsPort)
-  .option('-t, --ttl [seconds]', 'Cache lifetime in seconds [1800]', parseInt, 1800)
-  .option('-s, --storage [path]', 'Storage path', __dirname + '/../cache')
-  .option('-x, --proxy [address]', 'HTTP proxy to be used, e.g. http://user:pass@example.com:8888/')
-  .option('-e, --expired', 'Use expired cache when npm registry unavailable')
+  .option('-o, --adminport [number]', 'An integer argument [' + defaultAdminPort + ']', parseInt, defaultAdminPort)
+  .option('-t, --ttl [seconds]', 'Cache lifetime in seconds [' + defaultTtl + ']', parseInt, defaultTtl)
   .option('-f, --friendly-names', 'Use actual file names instead of hashes in the cache')
   .option('-v, --verbose', 'Verbose mode')
   .parse(process.argv);
