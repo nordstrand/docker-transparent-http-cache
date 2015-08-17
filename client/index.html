@@ -3,14 +3,41 @@
 	<head>
 		<title>Cache status</title>
 
-      <script src="https://fb.me/react-with-addons-0.13.3.min.js"></script>
-      <script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+      <script src="react-with-addons-0.13.3.min.js"></script>
+      <script src="JSXTransformer-0.13.3.js"></script>
       <script src="reactable.js"></script>
       <script src="jquery-2.1.4.js"></script>
+      <link rel="stylesheet" href="pure-min.css">
 
  	<style>
 
-      dd:after {content: ": ";}
+        dl {
+            border: 3px double #ccc;
+            padding: 0.5em;
+        }
+        dt {
+            float: left;
+            clear: left;
+            width: 150 px;
+            text-align: right;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        dt:after {
+            content: ":";
+        }
+        dd {
+            margin: 0 0 0 160px;
+            padding: 0 0 0.5em 1em;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            white-space: nowrap;
+        }
 
       .reactable-page-button {
         margin-left: 5px;
@@ -40,10 +67,6 @@
 
       th {
         cursor: pointer;
-      }
-
-      th.reactable-header-sort-desc, #demo-table th.reactable-header-sort-asc {
-        background-color: #474747;
       }
 
       th.reactable-header-sort-desc:after {
@@ -81,105 +104,10 @@
 
     </style>
 
-		<script type="text/jsx">
-            var Table = Reactable.Table;
+    <script type="text/jsx" src="ui.jsx"></script>
 
-            var CacheEntries = React.createClass({
-              render: function() {
-                return (
-                        <Table sortable={true}
-                               filterable={['url']}
-                               className="table"
-                               itemsPerPage={100}
-                               data={this.props.data}
-                         />
-                );
-              }
-            });
-
-            var CacheStats = React.createClass({
-              render: function() {
-                return (
-                        <dl>
-                                <dd>Cache entries</dd>
-                                <dt>{this.props.data.length}</dt>
-                                <dd>Cache size</dd>
-                                <dt>{this.props.data.reduce(function (previousValue, currentValue) {
-                                                                          return previousValue + currentValue.size;
-                                                                        }, 0)}
-                                    &nbsp;b</dt>
-                        </dl>
-                    );
-              }
-            });
-
-            var Main = React.createClass({
-
-              getInitialState: function() {
-                return {
-                  data: [],
-                  complete:true,
-                  autoupdating: true};
-              },
-
-              componentDidMount: function() {
-
-                this.update();
-
-                setInterval(function() {
-                  if (this.state.autoupdating) {
-                    this.update();
-                  }
-                }.bind(this), 1000);
-              },
-
-              update: function() {
-                  $.ajax({
-                    url: this.props.url,
-                    dataType: 'json',
-                    cache: false,
-                    success: function (data) {
-                      this.setState({data: data});
-                    }.bind(this),
-                    error: function (xhr, status, err) {
-                      console.error(this.props.url, status, err.toString());
-                    }.bind(this)
-                  });
-
-              },
-
-              flushCache: function() {
-                $.ajax({url: this.props.url, type: 'DELETE', complete: this.update});
-              },
-
-              autosettingChanged: function(ev) {
-                this.setState({autoupdating: ev.target.checked});
-              },
-
-              render: function() {
-                return (
-                        <div>
-                          <CacheStats data={this.state.data}/>
-                          <button onClick={this.flushCache}>Flush cache</button>
-                          <br/>
-                          <input type="checkbox"
-                            defaultChecked={this.state.autoupdating}
-                            onChange={this.autosettingChanged}>Automatically update</input>
-                          <CacheEntries data={this.state.data} />
-                        </div>
-                );
-              }
-            });
-
-
-            React.render(<Main url={"/cache"}  />, document.getElementById('react0'));
-
-		</script>
 	</head>
 	<body>
-    <h1>Cache status</h1>
-
-    <div id="react0"></div>
-
+        <div id="react0"></div>
 	</body>
 </html>
