@@ -12,18 +12,23 @@ First build and launch the docker-transparent-http-cache image:
 
     $ docker build -t docker-transparent-http-cache .
 
-    $ docker run -d --name cache-for-registry.npmjs.org --env TARGET_HOSTNAME=registry.npmjs.org docker-transparent-http-cache
+    $ docker run -d --name cache-for-registry.npmjs.org \
+    --env TARGET_HOSTNAME=registry.npmjs.org \
+    docker-transparent-http-cache
 
 Now can any container get all requests for `registry.npmjs.org` cached simply by linking to the cache container!
 
-    $ docker run -it --rm -e bash --link cache-for-registry.npmjs.org:registry.npmjs.org node:0.12 -c 'git clone https://github.com/mochajs/mocha.git; cd mocha; npm --strict-ssl false install'
+    $ docker run -it --rm -e bash \
+    --link cache-for-registry.npmjs.org:registry.npmjs.org \
+    node:0.12 \
+    -c 'git clone https://github.com/mochajs/mocha.git; cd mocha; npm --strict-ssl false install'
 
 The `strict-ssl false` option is required since npm by default will use `https://` when downloading, and the certificate
 docker-transparent-http-cache serves is signed by a self signed CA certificate that is not included in node's ca bundle.
 
 A nicer solution than `strict-ssl false` is to install the CA certificate intself as a trusted ca bundle:
 
-    $ npm config cafile rootCA.epm
+    $ npm config cafile rootCA.pem
 
 Above command of course goes into the provisioning/Dockerfile of your private build image!
 
@@ -42,7 +47,7 @@ A simple user interface for the cache is provided:
 
 Will only cache GET requests, other verbs are passed straight through. Deploying/pushing artifacts will thus be unaffected.
 
-Caches HTTP on port 80 and HTTPS on port 443 on `TARGET_HOSTNAME`.
+Caches by default HTTP on port 80 and HTTPS on port 443 on `TARGET_HOSTNAME`.
 
 ## Credits
 
