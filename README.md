@@ -27,6 +27,17 @@ A nicer solution than `strict-ssl false` is to install the CA certificate intsel
 
 Above command of course goes into the provisioning/Dockerfile of your private build image!
 
+## Environment variables
+
+    TARGET_HOSTNAME - The hostname of the cache's target
+    TTL - How long requests will live in the cache (default 60 seconds)
+    MAX_SIZE - TODO! How many requests that can be cached (overflowing cache entries are flushed on a LRU basis)
+
+## Admin UI
+A simple user interface for the cache is provided:
+
+![alt text](doc/screenshot.png  "Admin UI")
+
 ## Notes
 
 Will only cache GET requests, other verbs are passed straight through. Deploying/pushing artifacts will thus be unaffected.
