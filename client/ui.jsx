@@ -8,8 +8,11 @@ var CacheEntries = React.createClass({
             filterable={['url']}
             columns={[{key: 'url', label: 'URL'},
             {key: 'contenttype', label: 'Content-type'},
+            {key: 'used', label: 'Latest use'},
             {key: 'expires', label: 'Expires by'},
-            {key: 'size', label: 'Size'}]}
+            {key: 'hits', label: 'Hits'},
+            {key: 'size', label: 'Size'}
+            ]}
             className="pure-table pure-table-striped"
             itemsPerPage={100}
             data={this.props.data}
@@ -20,17 +23,30 @@ var CacheEntries = React.createClass({
 });
 
 var CacheStats = React.createClass({
+    formatBytes: function(bytes,decimals) {
+        if(bytes == 0) return '0 Byte';
+        var k = 1000;
+        var dm = decimals + 1 || 3;
+        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        var i = Math.floor(Math.log(bytes) / Math.log(k));
+        return (bytes / Math.pow(k, i)).toPrecision(dm) + ' ' + sizes[i];
+    },
+
     render: function() {
         return (
             <dl>
                 <dt>Cache entries</dt>
                 <dd>{this.props.data.contents.length}</dd>
                 <dt>Cache size</dt>
-                <dd>{this.props.data.contents.reduce(function (previousValue, currentValue) {
+                <dd>{this.formatBytes(this.props.data.contents.reduce(function (previousValue, currentValue) {
                     return previousValue + currentValue.size;
-                    }, 0)}&nbsp;b</dd>
+                    }, 0), 2)}</dd>
                 <dt>V8 heap usage</dt>
-                <dd>{this.props.data.heapUsage}&nbsp;b</dd>
+                <dd>{this.formatBytes(this.props.data.heapUsage, 2)}</dd>
+                <dt>Hit ratio</dt>
+                <dd>{this.props.data.requests !== 0 ?
+                    parseFloat(Math.round( 100*(this.props.data.hits/this.props.data.requests) * 100) / 100).toFixed(2) + "%" :
+                    'N/A'}&nbsp;{this.props.data.requests > 1 ? '(of ' + this.props.data.requests  + ' requests)' : undefined }</dd>
             </dl>
         );
     }
@@ -102,7 +118,7 @@ var Main = React.createClass({
                 </label>
                 <CacheEntries data={this.state.cache.contents} />
                 <hr/>
-                <span style={{float: 'right'}}>Time-to-live: {this.state.meta.ttl} s</span>
+                <span style={{float: 'right'}}>Time-to-live: {this.state.meta.ttl} s; Maximum cache size: {this.state.meta.maxSize} </span>
                 <span>{this.state.meta.applicationName}, version {this.state.meta.applicationVersion}</span>
 
             </div>

@@ -36,7 +36,7 @@ Above command of course goes into the provisioning/Dockerfile of your private bu
 
     TARGET_HOSTNAME - The hostname of the cache's target
     TTL - How long requests will live in the cache (default 60 seconds)
-    MAX_SIZE - TODO! How many requests that can be cached (overflowing cache entries are flushed on a LRU basis)
+    MAX_SIZE - The greatest size the cache can grow to (overflowing cache entries are flushed on a LRU bases)
 
 ## Admin UI
 A simple user interface for the cache is provided:

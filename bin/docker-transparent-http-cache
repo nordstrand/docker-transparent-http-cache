@@ -6,7 +6,8 @@ var fs = require('fs'),
 var defaultHttpPort=process.env.PROXY_HTTP_PORT ? process.env.PROXY_HTTP_PORT : 8080;
 var defaultHttpsPort=process.env.PROXY_HTTPS_PORT ? process.env.PROXY_HTTPS_PORT : 8443;
 var defaultAdminPort=process.env.PROXY_ADMIN_PORT ? process.env.PROXY_ADMIN_PORT : 8888;
-var defaultTtl=process.env.TTL ? process.env.TTL : 60;
+var defaultTtl=process.env.TTL ? process.env.TTL : 300;
+var defaultMaxSize=process.env.MAX_SIZE ? process.env.MAX_SIZE : 1000;
 
 program
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
@@ -16,7 +17,7 @@ program
   .option('-s, --httpsport [number]', 'An integer argument [' + defaultHttpsPort + ']', parseInt, defaultHttpsPort)
   .option('-o, --adminport [number]', 'An integer argument [' + defaultAdminPort + ']', parseInt, defaultAdminPort)
   .option('-t, --ttl [seconds]', 'Cache lifetime in seconds [' + defaultTtl + ']', parseInt, defaultTtl)
-  .option('-f, --friendly-names', 'Use actual file names instead of hashes in the cache')
+  .option('-m, --maxsize [number]', 'Maximum number of cache entries [' + defaultMaxSize + ']', parseInt, defaultMaxSize)
   .option('-v, --verbose', 'Verbose mode')
   .parse(process.argv);
 
