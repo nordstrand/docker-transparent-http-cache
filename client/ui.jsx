@@ -1,4 +1,16 @@
 var Table = Reactable.Table;
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
+
+var If = React.createClass({
+    render: function() {
+        if (this.props.test) {
+            return this.props.children;
+        }
+        else {
+            return (<span></span>);
+        }
+    }
+});
 
 var CacheEntries = React.createClass({
     render: function() {
@@ -52,6 +64,18 @@ var CacheStats = React.createClass({
     }
 });
 
+
+var HelpBox = React.createClass({
+    render: function() {
+        return (
+            <div key={2}>
+                <h4>NPM setup</h4>
+                <p>blbb</p>
+            </div>
+        );
+    }
+});
+
 var Main = React.createClass({
 
     getInitialState: function() {
@@ -59,7 +83,9 @@ var Main = React.createClass({
             cache: {heapUsage: 0,
                     contents: []},
             meta: {},
-            autoupdating: true};
+            autoupdating: true,
+            statusShowing: true
+        };
     },
 
     componentDidMount: function() {
@@ -101,22 +127,38 @@ var Main = React.createClass({
         this.setState({autoupdating: ev.target.checked});
     },
 
+    toggleHelp: function(ev) {
+        this.setState({statusShowing: ! this.state.statusShowing});
+    },
+
+
     render: function() {
-        return (
-            <div style={{padding: '10px'}}>
-                <h1>Transparent HTTP/HTTPS proxy</h1>
-                <h3>Caching requests for {this.state.meta.target}</h3>
+
+        if (this.state.statusShowing) {
+            var mainView = ( <div key={1}>
                 <CacheStats data={this.state.cache}/>
                 <button onClick={this.flushCache} className="pure-button">Flush cache</button>
                 <br/>
-                <label for="cb" className="pure-checkbox" style={{float:'right'}}>
-                <input
-                    id="cb"
-                    type="checkbox"
-                    defaultChecked={this.state.autoupdating}
-                    onChange={this.autosettingChanged}/>Automatically update
-                </label>
-                <CacheEntries data={this.state.cache.contents} />
+                <label htmlFor="cb" className="pure-checkbox" style={{float:'right'}}>
+                    <input
+                        id="cb"
+                        type="checkbox"
+                        defaultChecked={this.state.autoupdating}
+                        onChange={this.autosettingChanged}/>Automatically update
+                </label><CacheEntries data={this.state.cache.contents} />
+            </div>);
+        } else {
+            var mainView = (<HelpBox key={11}/>);
+        }
+
+        return (
+            <div style={{padding: '10px'}}>
+                <button style={{float: 'right'}} onClick={this.toggleHelp} className="pure-button">{this.state.statusShowing ? 'Client configuration' : 'Cache status'}</button>
+                <h1>Transparent HTTP/HTTPS proxy</h1>
+                <h3>Caching requests for {this.state.meta.target}</h3>
+                <ReactCSSTransitionGroup transitionLeave={false} transitionName="main">
+                    {mainView}
+                </ReactCSSTransitionGroup>
                 <hr/>
                 <span style={{float: 'right'}}>Time-to-live: {this.state.meta.ttl} s; Maximum cache size: {this.state.meta.maxSize} </span>
                 <span>{this.state.meta.applicationName}, version {this.state.meta.applicationVersion}</span>

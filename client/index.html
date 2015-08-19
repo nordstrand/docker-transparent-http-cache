@@ -3,13 +3,24 @@
 	<head>
 		<title>Cache status</title>
 
-      <script src="react-with-addons-0.13.3.min.js"></script>
+      <script src="react-with-addons-0.13.3.js"></script>
       <script src="JSXTransformer-0.13.3.js"></script>
       <script src="reactable.js"></script>
       <script src="jquery-2.1.4.js"></script>
       <link rel="stylesheet" href="pure-min.css">
 
  	<style>
+
+        .main-enter {
+            opacity: 0;
+
+        }
+
+        .main-enter.main-enter-active {
+            opacity: 1;
+            transition: opacity 0.5s ease-in;
+        }
+
 
         dl {
             border: 3px double #ccc;
