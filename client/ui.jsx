@@ -120,7 +120,7 @@ var Main = React.createClass({
     },
 
     flushCache: function() {
-        $.ajax({url: this.props.url, type: 'DELETE', complete: this.updateCacheData});
+        $.ajax({url: this.props.cacheUrl, type: 'DELETE', complete: this.updateCacheData});
     },
 
     autosettingChanged: function(ev) {
