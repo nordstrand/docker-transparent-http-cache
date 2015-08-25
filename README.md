@@ -83,6 +83,9 @@ However docker-transparent-http-cache:
 
  * is lean (at its core: ~100 lines of approachable hackable node js code)
  * works transparently out-of-the-box, no iptables setup required
+ * dynamically creates certificate with correct CN/Common Name when proxying TLS traffic, the
+   certificate is signed by a self signed CA certificate (rootCA.pem) that is included with the distribution
+   and ready to be imported into the truststore/ca-bundle of a "victim"
 
 
 ----

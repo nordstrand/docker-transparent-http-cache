@@ -65,16 +65,7 @@ var CacheStats = React.createClass({
 });
 
 
-var HelpBox = React.createClass({
-    render: function() {
-        return (
-            <div key={2}>
-                <h4>NPM setup</h4>
-                <p>blbb</p>
-            </div>
-        );
-    }
-});
+
 
 var Main = React.createClass({
 
