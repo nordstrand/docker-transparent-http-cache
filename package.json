@@ -1,6 +1,11 @@
 {
   "name": "docker-transparent-http-cache",
   "version": "0.0.2",
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
   "dependencies": {
     "commander": "2.0.0",
     "log4js": "0.6.8",
@@ -12,12 +17,21 @@
   "description": "HTTP/HTTPS caching proxy for Docker build containers",
   "main": "index.js",
   "devDependencies": {
+    "babelify": "^6.1.3",
+    "browserify": "^10.2.6",
+    "jquery-ajax": "^2.1.4",
     "mocha": "*",
-    "rimraf": "*"
+    "react": "~0.13.3",
+    "reactable": "^0.10.2",
+    "rimraf": "*",
+    "uglify-js": "^2.4.24",
+    "watchify": "^3.2.3"
   },
   "scripts": {
     "start": "node bin/docker-transparent-http-cache",
-    "test": "mocha -R spec --recursive"
+    "test": "mocha -R spec --recursive",
+    "postinstall": "NODE_ENV=production browserify client/ui.jsx | uglifyjs -cm > client/bundle.js",
+    "watch": "watchify client/ui.jsx -o client/bundle.js -dv"
   },
   "repository": {
     "type": "git",

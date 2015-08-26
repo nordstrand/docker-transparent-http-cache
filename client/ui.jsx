@@ -1,86 +1,27 @@
-var Table = Reactable.Table;
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
-
-var If = React.createClass({
-    render: function() {
-        if (this.props.test) {
-            return this.props.children;
-        }
-        else {
-            return (<span></span>);
-        }
-    }
-});
-
-var CacheEntries = React.createClass({
-    render: function() {
-        return this.props.data.length ?
-        <Table
-            sortable={true}
-            filterable={['url']}
-            columns={[{key: 'url', label: 'URL'},
-            {key: 'contenttype', label: 'Content-type'},
-            {key: 'used', label: 'Latest use'},
-            {key: 'expires', label: 'Expires by'},
-            {key: 'hits', label: 'Hits'},
-            {key: 'size', label: 'Size'}
-            ]}
-            className="pure-table pure-table-striped"
-            itemsPerPage={100}
-            data={this.props.data}
-        /> : <p style={{fontStyle: 'italic'}}>Cache is empty</p>;
+import React from 'react/addons'
+import Reactable from 'reactable'
+import {HelpBox} from './help.jsx'
+import $ from 'jquery-ajax'
 
 
-    }
-});
+class Main extends React.Component {
+    constructor() {
+        super();
+        this.render = this.render.bind(this);
+        this.flushCache = this.flushCache.bind(this);
+        this.toggleHelp = this.toggleHelp.bind(this);
+        this.autosettingChanged = this.autosettingChanged.bind(this);
 
-var CacheStats = React.createClass({
-    formatBytes: function(bytes,decimals) {
-        if(bytes == 0) return '0 Byte';
-        var k = 1000;
-        var dm = decimals + 1 || 3;
-        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-        var i = Math.floor(Math.log(bytes) / Math.log(k));
-        return (bytes / Math.pow(k, i)).toPrecision(dm) + ' ' + sizes[i];
-    },
-
-    render: function() {
-        return (
-            <dl>
-                <dt>Cache entries</dt>
-                <dd>{this.props.data.contents.length}</dd>
-                <dt>Cache size</dt>
-                <dd>{this.formatBytes(this.props.data.contents.reduce(function (previousValue, currentValue) {
-                    return previousValue + currentValue.size;
-                    }, 0), 2)}</dd>
-                <dt>V8 heap usage</dt>
-                <dd>{this.formatBytes(this.props.data.heapUsage, 2)}</dd>
-                <dt>Hit ratio</dt>
-                <dd>{this.props.data.requests !== 0 ?
-                    parseFloat(Math.round( 100*(this.props.data.hits/this.props.data.requests) * 100) / 100).toFixed(2) + "%" :
-                    'N/A'}&nbsp;{this.props.data.requests > 1 ? '(of ' + this.props.data.requests  + ' requests)' : undefined }</dd>
-            </dl>
-        );
-    }
-});
-
-
-
-
-var Main = React.createClass({
-
-    getInitialState: function() {
-        return {
+        this.state = {
             cache: {heapUsage: 0,
                     contents: []},
             meta: {},
             autoupdating: true,
             statusShowing: true
         };
-    },
+    }
 
-    componentDidMount: function() {
-
+    componentDidMount() {
         this.updateCacheData = this.update.bind(this, this.props.cacheUrl);
 
         this.update.apply(this, [this.props.metaUrl]);
@@ -91,9 +32,9 @@ var Main = React.createClass({
                 this.updateCacheData();
             }
         }.bind(this), 1500);
-    },
+    }
 
-    update: function(url) {
+    update(url) {
         $.ajax({
             url: url,
             dataType: 'json',
@@ -107,24 +48,21 @@ var Main = React.createClass({
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
+    }
 
-    },
-
-    flushCache: function() {
+    flushCache() {
         $.ajax({url: this.props.cacheUrl, type: 'DELETE', complete: this.updateCacheData});
-    },
+    }
 
-    autosettingChanged: function(ev) {
+    autosettingChanged(ev) {
         this.setState({autoupdating: ev.target.checked});
-    },
+    }
 
-    toggleHelp: function(ev) {
+    toggleHelp(ev) {
         this.setState({statusShowing: ! this.state.statusShowing});
-    },
+    }
 
-
-    render: function() {
-
+    render() {
         if (this.state.statusShowing) {
             var mainView = ( <div key={1}>
                 <CacheStats data={this.state.cache}/>
@@ -147,9 +85,9 @@ var Main = React.createClass({
                 <button style={{float: 'right'}} onClick={this.toggleHelp} className="pure-button">{this.state.statusShowing ? 'Client configuration' : 'Cache status'}</button>
                 <h1>Transparent HTTP/HTTPS proxy</h1>
                 <h3>Caching requests for {this.state.meta.target}</h3>
-                <ReactCSSTransitionGroup transitionLeave={false} transitionName="main">
+                <React.addons.CSSTransitionGroup transitionLeave={false} transitionName="main">
                     {mainView}
-                </ReactCSSTransitionGroup>
+                </React.addons.CSSTransitionGroup>
                 <hr/>
                 <span style={{float: 'right'}}>Time-to-live: {this.state.meta.ttl} s; Maximum cache size: {this.state.meta.maxSize} </span>
                 <span>{this.state.meta.applicationName}, version {this.state.meta.applicationVersion}</span>
@@ -157,7 +95,56 @@ var Main = React.createClass({
             </div>
         );
     }
-});
+}
 
+class CacheEntries extends React.Component {
+    render() {
+        return this.props.data.length ?
+            <Reactable.Table
+                sortable={true}
+                filterable={['url']}
+                columns={[{key: 'url', label: 'URL'},
+            {key: 'contenttype', label: 'Content-type'},
+            {key: 'used', label: 'Latest use'},
+            {key: 'expires', label: 'Expires by'},
+            {key: 'hits', label: 'Hits'},
+            {key: 'size', label: 'Size'}
+            ]}
+                className="pure-table pure-table-striped"
+                itemsPerPage={100}
+                data={this.props.data}
+            /> : <p style={{fontStyle: 'italic'}}>Cache is empty</p>;
+    }
+}
 
-React.render(<Main cacheUrl={"/cache"} metaUrl={"/meta"} />, document.getElementById('react0'));
+class CacheStats extends React.Component{
+    formatBytes(bytes,decimals) {
+        if(bytes == 0) return '0 Byte';
+        var k = 1000;
+        var dm = decimals + 1 || 3;
+        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        var i = Math.floor(Math.log(bytes) / Math.log(k));
+        return (bytes / Math.pow(k, i)).toPrecision(dm) + ' ' + sizes[i];
+    }
+
+    render() {
+        return (
+            <dl>
+                <dt>Cache entries</dt>
+                <dd>{this.props.data.contents.length}</dd>
+                <dt>Cache size</dt>
+                <dd>{this.formatBytes(this.props.data.contents.reduce(function (previousValue, currentValue) {
+                    return previousValue + currentValue.size;
+                }, 0), 2)}</dd>
+                <dt>V8 heap usage</dt>
+                <dd>{this.formatBytes(this.props.data.heapUsage, 2)}</dd>
+                <dt>Hit ratio</dt>
+                <dd>{this.props.data.requests !== 0 ?
+                parseFloat(Math.round( 100*(this.props.data.hits/this.props.data.requests) * 100) / 100).toFixed(2) + "%" :
+                    'N/A'} {this.props.data.requests > 1 ? '(of ' + this.props.data.requests  + ' requests)' : undefined }</dd>
+            </dl>
+        );
+    }
+}
+
+React.render(<Main cacheUrl={"/cache"} metaUrl={"/meta"} />, document.getElementById('react'));

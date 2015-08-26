@@ -1,0 +1,103 @@
+.main-enter {
+    opacity: 0;
+}
+
+.main-enter.main-enter-active {
+    opacity: 1;
+    transition: opacity 0.5s ease-in;
+}
+
+.raw {
+    white-space: pre-wrap;
+    font-family: monospace;
+    background-color: honeydew;
+}
+
+dl {
+    border: 3px double #ccc;
+    padding: 0.5em;
+}
+dt {
+    float: left;
+    clear: left;
+    width: 150 px;
+    text-align: right;
+    font-weight: bold;
+    white-space: nowrap;
+}
+dt:after {
+    content: ":";
+}
+dd {
+    margin: 0 0 0 160px;
+    padding: 0 0 0.5em 1em;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    white-space: nowrap;
+}
+
+.reactable-page-button {
+    margin-left: 5px;
+    margin-right: 2px;
+    margin-bottom: 6px;
+    padding: 3px;
+    width: 30px;
+    float: left;
+    cursor: pointer;
+    color: #000;
+    border: 1px solid #AAA;
+    background-color: #EEE;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.reactable-page-button:hover {
+    text-decoration: none;
+    color: #333;
+    background-color: #DDD;
+}
+
+.reactable-current-page {
+    background-color: #DDD;
+    cursor: default;
+}
+
+th {
+    cursor: pointer;
+}
+
+th.reactable-header-sort-desc:after {
+    content: '\25B2';
+    font-size: 10px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+}
+
+th.reactable-header-sort-asc:after {
+    content: '\25BC';
+    font-size: 10px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+}
+
+tr.reactable-filterer {
+    width: 100%;
+}
+
+tr.reactable-filterer td {
+    width: 100%;
+}
+
+.reactable-filter-input {
+    width: 95%;
+    margin-left: 10px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    margin-right: 20px;
+    padding: 5px;
+}
