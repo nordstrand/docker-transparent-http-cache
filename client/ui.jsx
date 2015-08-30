@@ -5,20 +5,14 @@ import $ from 'jquery-ajax'
 
 
 class Main extends React.Component {
-    constructor() {
-        super();
-        this.render = this.render.bind(this);
-        this.flushCache = this.flushCache.bind(this);
-        this.toggleHelp = this.toggleHelp.bind(this);
-        this.autosettingChanged = this.autosettingChanged.bind(this);
-
-        this.state = {
-            cache: {heapUsage: 0,
-                    contents: []},
-            meta: {},
-            autoupdating: true,
-            statusShowing: true
-        };
+    state = {
+        cache: {
+            heapUsage: 0,
+            contents: []
+        },
+        meta: {},
+        autoupdating: true,
+        statusShowing: true
     }
 
     componentDidMount() {
@@ -27,11 +21,11 @@ class Main extends React.Component {
         this.update.apply(this, [this.props.metaUrl]);
         this.updateCacheData();
 
-        setInterval(function() {
+        setInterval((() => {
             if (this.state.autoupdating) {
                 this.updateCacheData();
             }
-        }.bind(this), 1500);
+        }).bind(this), 1500);
     }
 
     update(url) {
@@ -50,15 +44,15 @@ class Main extends React.Component {
         });
     }
 
-    flushCache() {
+    flushCache = () => {
         $.ajax({url: this.props.cacheUrl, type: 'DELETE', complete: this.updateCacheData});
     }
 
-    autosettingChanged(ev) {
+    autosettingChanged = (ev) => {
         this.setState({autoupdating: ev.target.checked});
     }
 
-    toggleHelp(ev) {
+    toggleHelp = (ev) => {
         this.setState({statusShowing: ! this.state.statusShowing});
     }
 
@@ -118,7 +112,7 @@ class CacheEntries extends React.Component {
 }
 
 class CacheStats extends React.Component{
-    formatBytes(bytes,decimals) {
+    formatBytes(bytes, decimals) {
         if(bytes == 0) return '0 Byte';
         var k = 1000;
         var dm = decimals + 1 || 3;

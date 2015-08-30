@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "browserify": {
     "transform": [
-      "babelify"
+      [ "babelify", {"optional": ["es7.classProperties"]}]
     ]
   },
   "dependencies": {
