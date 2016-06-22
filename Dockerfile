@@ -1,4 +1,4 @@
-FROM node:0.12-onbuild
+FROM node:6.2-onbuild
 
 
 ENV PROXY_HTTP_PORT=80 \

@@ -18,9 +18,9 @@ First build and launch the docker-transparent-http-cache image:
 
 Now can any container get all requests for `registry.npmjs.org` cached simply by linking to the cache container!
 
-    $ docker run -it --rm -e bash \
+    $ docker run -it --rm --entrypoint bash \
     --link cache-for-registry.npmjs.org:registry.npmjs.org \
-    node:0.12 \
+    node \
     -c 'git clone https://github.com/mochajs/mocha.git; cd mocha; npm --strict-ssl false install'
 
 The `strict-ssl false` option is required since npm by default will use `https://` when downloading, and the certificate

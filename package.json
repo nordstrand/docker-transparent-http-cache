@@ -3,10 +3,19 @@
   "version": "0.0.2",
   "browserify": {
     "transform": [
-      [ "babelify", {"optional": ["es7.classProperties"]}]
+      [
+        "babelify",
+        {
+          "optional": [
+            "es7.classProperties"
+          ]
+        }
+      ]
     ]
   },
+  "engines" : { "node" : ">=6.0" },
   "dependencies": {
+    "caching-map": "^1.0.2",
     "commander": "2.0.0",
     "log4js": "0.6.8",
     "memorystream": "^0.3.1",
